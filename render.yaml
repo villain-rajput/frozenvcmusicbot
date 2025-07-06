@@ -4,7 +4,7 @@ services:
     env: python
     plan: free
     buildCommand: "pip install -r requirements.txt"
-    startCommand: "python FrozenMusic/app/main.py"
+    startCommand: "python main.py"
     envVars:
       - key: API_HASH
         sync: false
