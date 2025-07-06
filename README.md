@@ -5,7 +5,7 @@
 </h2>
 
 <p align="center">
-  <img src="(https://frozen-imageapi.lagendplayersyt.workers.dev/file/9c80273b-bc8a-497a-959b-72d5b79f8341.png">
+  <img src="https://frozen-imageapi.lagendplayersyt.workers.dev/file/9c80273b-bc8a-497a-959b-72d5b79f8341.png">
 </p>
 
 <p align="center">
