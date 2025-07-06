@@ -9,8 +9,9 @@ import asyncio
 import random
 import os
 from typing import Union
-from pyrogram.types import Message, CallbackQuery, ChatMemberStatus
+from pyrogram.types import Message, CallbackQuery
 from pyrogram.enums import ChatType
+from pyrogram.enums import ChatMemberStatus
 
 
 
