@@ -1,7 +1,7 @@
 ━━━━━━━━━━━━━━━━━━━━
 
 <h2 align="center">
-    ──「⛦🦋 frzoen music 🦋⛦」──
+    ──「 ⛦🦋 Frozen Music VC Bot 🦋⛦ 」──
 </h2>
 
 <p align="center">
@@ -9,18 +9,42 @@
 </p>
 
 <p align="center">
-<a href="https://github.com/prashantsahlot/stargazers"><img src="https://img.shields.io/github/stars/prashantsahlot/frozenvcmusic?color=black&logo=github&logoColor=black&style=for-the-badge" alt="Stars" /></a>
-<a href="https://github.com/prashantsahlot/frozenvcmusic/network/members"> <img src="https://img.shields.io/github/forks/prashantsahlot/frozenvcmusic?color=black&logo=github&logoColor=black&style=for-the-badge" /></a>
-<a href="https://github.com/prashantsahlot/frozevcmusic/blob/master/LICENSE"> <img src="https://img.shields.io/badge/License-MIT-blueviolet?style=for-the-badge" alt="License" /> </a>
+<a href="https://github.com/prashantsahlot/frozenvcmusicbot/stargazers"><img src="https://img.shields.io/github/stars/prashantsahlot/frozenvcmusicbot?color=black&logo=github&logoColor=black&style=for-the-badge" alt="Stars" /></a>
+<a href="https://github.com/prashantsahlot/frozenvcmusicbot/network/members"> <img src="https://img.shields.io/github/forks/prashantsahlot/frozenvcmusicbot?color=black&logo=github&logoColor=black&style=for-the-badge" /></a>
+<a href="https://github.com/prashantsahlot/frozenvcmusicbot/blob/master/LICENSE"> <img src="https://img.shields.io/badge/License-Frozen%20Protect-blueviolet?style=for-the-badge" alt="License" /> </a>
 <a href="https://www.python.org/"> <img src="https://img.shields.io/badge/Written%20in-Python-orange?style=for-the-badge&logo=python" alt="Python" /> </a>
-<a href="https://github.com/prashantsahlot/frozenvcmusic/commits/WCGKING"> <img src="https://img.shields.io/github/last-commit/prashantsahlot/frozenvcmusic?color=blue&logo=github&logoColor=green&style=for-the-badge" /></a>
+<a href="https://github.com/prashantsahlot/frozenvcmusicbot/commits/main"> <img src="https://img.shields.io/github/last-commit/prashantsahlot/frozenvcmusicbot?color=blue&logo=github&logoColor=green&style=for-the-badge" /></a>
 </p>
+
+---
+
+## 🚀 Features
+
+- 🎧 Play music in Telegram VC groups.
+- 💥 Fully open source and free.
+- ☁️ Can run easily on **Render**, **Koyeb**, or your VPS.
+- 🌱 Easy to set up with one-click deploy buttons.
+- ❄️ Uses custom FrozenGram fork for enhanced stability.
+
+---
+
+## 💡 Quick Deploy
 
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy)
 
 ---
 
-### 💡 Required environment variables
+## ⚡ One-click Setup
+
+<p align="center">
+<a href="https://github.com/prashantsahlot/frozenvcmusicbot/generate"><img src="https://img.shields.io/badge/-Fork%20Repo-black?style=for-the-badge&logo=github"></a>
+<a href="https://t.me/webhooksettinggbot"><img src="https://img.shields.io/badge/-Set%20Webhook-blue?style=for-the-badge&logo=telegram"></a>
+</p>
+
+---
+
+## 🛠️ Required environment variables
+
 
 
 
@@ -34,7 +58,7 @@
     ─「 ᴅᴇᴩʟᴏʏ ᴏɴ ʟᴏᴄᴀʟ ʜᴏsᴛ/ ᴠᴘs 」─
 </h3>
 
-- Get your [Necessary Variables](https://github.com/prashantsahlot/frozenvcmusic/blob/master/sample.env)
+- Get your [Necessary Variables](https://github.com/prashantsahlot/frozenvcmusicbot/blob/master/frozen.env)
 ---
 
 ### 🔧 Quick Setup
@@ -58,7 +82,7 @@
    ```
 5. **Clone the Repository**
    ```bash
-   git clone https://github.com/frozenoffical/frozenvcmusic && cd frozenvcmusic
+   git clone https://github.com/prashantsahlot/frozenvcmusicbot && cd frozenvcmusicbot
    ```
 6. **Install Requirements**
    ```bash
@@ -66,7 +90,7 @@
    ```
 7. **Create .env  with sample.env**
    ```bash
-   cp sample.env .env
+   cp frozen.env .env
    ```
    - Edit .env with your vars
 8. **Editing Vars:**
@@ -82,7 +106,7 @@
     ```
 10. **Run the Bot**
     ```bash
-    bash start
+    python3 main.py
 ━━━━━━━━━━━━━━━━━━━━
 
 <h3 align="center">
