@@ -28,7 +28,6 @@
 
 ---
 
-**𝙏𝙀𝙎𝙏 𝘽𝙊𝙏 ➣ [˹𝐌ᴜꜱɪᴄ™ ˹ʙꜱ](https://t.me/vcmusicro_bot)**
 
 ## 💡 Quick Deploy
 
