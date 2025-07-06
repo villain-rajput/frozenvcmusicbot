@@ -40,7 +40,7 @@
 </p>
 
 
----
+---\n\n
 
 ## ⚡ One-click Setup
 
