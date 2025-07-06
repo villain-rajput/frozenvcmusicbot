@@ -1,0 +1,54 @@
+{
+  "name": "Frozen Music Bot",
+  "description": "❄️ Frozen Music — Free Telegram VC music bot that runs on Render, Koyeb, Railway & Heroku easily!",
+  "repository": "https://github.com/prashantsahlot/frozenvcmusicbot",
+  "logo": "https://telegra.ph/file/d02b81736a7e9519c6386.jpg",
+  "keywords": ["telegram", "music", "bot", "vc", "python"],
+  "env": {
+    "API_HASH": {
+      "description": "Your Telegram API_HASH from https://my.telegram.org",
+      "required": true
+    },
+    "API_ID": {
+      "description": "Your Telegram API_ID from https://my.telegram.org",
+      "required": true
+    },
+    "API_URL": {
+      "description": "API endpoint for YouTube search",
+      "required": true
+    },
+    "ASSISTANT_SESSION": {
+      "description": "Pyrogram string session for assistant account",
+      "required": true
+    },
+    "BOT_TOKEN": {
+      "description": "Your Telegram bot token from @BotFather",
+      "required": true
+    },
+    "DOWNLOAD_API_URL": {
+      "description": "API URL for audio downloading",
+      "required": true
+    },
+    "OWNER_ID": {
+      "description": "Your Telegram user ID (integer, e.g. 123456789)",
+      "required": true
+    },
+    "MongoDB_url": {
+      "description": "MongoDB URL (can use Atlas or local Mongo)",
+      "required": true
+    },
+    "ASSISTANT_USERNAME": {
+      "description": "Your assistant account username (with @)",
+      "required": false
+    },
+    "ASSISTANT_CHAT_ID": {
+      "description": "Your assistant account numeric chat ID",
+      "required": false
+    }
+  },
+  "buildpacks": [
+    {
+      "url": "heroku/python"
+    }
+  ]
+}
