@@ -38,7 +38,6 @@
 
 <p align="center">
 <a href="https://github.com/prashantsahlot/frozenvcmusicbot/generate"><img src="https://img.shields.io/badge/-Fork%20Repo-black?style=for-the-badge&logo=github"></a>
-<a href="https://t.me/webhooksettinggbot"><img src="https://img.shields.io/badge/-Set%20Webhook-blue?style=for-the-badge&logo=telegram"></a>
 </p>
 
 ---
