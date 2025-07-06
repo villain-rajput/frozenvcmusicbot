@@ -31,7 +31,14 @@
 
 ## 💡 Quick Deploy
 
-[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy)
+<p align="center">
+<a href="https://github.com/prashantsahlot/frozenvcmusicbot/generate"><img src="https://img.shields.io/badge/-Fork%20Repo-black?style=for-the-badge&logo=github"></a>
+<a href="https://render.com/deploy?repo=https://github.com/prashantsahlot/frozenvcmusicbot"><img src="https://img.shields.io/badge/-Deploy%20to%20Render-blueviolet?style=for-the-badge&logo=render"></a>
+<a href="https://app.koyeb.com/deploy?type=git&repository=github.com/prashantsahlot/frozenvcmusicbot&branch=main&name=frozen-music-bot"><img src="https://img.shields.io/badge/-Deploy%20to%20Koyeb-green?style=for-the-badge&logo=koyeb"></a>
+<a href="https://railway.app/new/template?template=https://github.com/prashantsahlot/frozenvcmusicbot&plugins=postgresql"><img src="https://img.shields.io/badge/-Deploy%20to%20Railway-cyan?style=for-the-badge&logo=railway"></a>
+<a href="https://heroku.com/deploy?template=https://github.com/prashantsahlot/frozenvcmusicbot"><img src="https://img.shields.io/badge/-Deploy%20to%20Heroku-purple?style=for-the-badge&logo=heroku"></a>
+</p>
+
 
 ---
 
