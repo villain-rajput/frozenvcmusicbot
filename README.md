@@ -16,7 +16,6 @@
 <a href="https://github.com/prashantsahlot/frozenvcmusic/commits/WCGKING"> <img src="https://img.shields.io/github/last-commit/prashantsahlot/frozenvcmusic?color=blue&logo=github&logoColor=green&style=for-the-badge" /></a>
 </p>
 
-━━━━━━━━━━━━━━━━━━━━
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy)
 
 ---
