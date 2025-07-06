@@ -5,7 +5,7 @@
 </h2>
 
 <p align="center">
-  <img src="https://frozen-imageapi.lagendplayersyt.workers.dev/file/9c80273b-bc8a-497a-959b-72d5b79f8341">
+  <img src="https://frozen-imageapi.lagendplayersyt.workers.dev/file/53608051-ec31-4dc7-9716-6be424d4eebf.png">
 </p>
 <p align="center">
 <a href="https://github.com/prashantsahlot/frozenvcmusicbot/stargazers"><img src="https://img.shields.io/github/stars/prashantsahlot/frozenvcmusicbot?color=black&logo=github&logoColor=black&style=for-the-badge" alt="Stars" /></a>
