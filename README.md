@@ -28,6 +28,8 @@
 
 ---
 
+**𝙏𝙀𝙎𝙏 𝘽𝙊𝙏 ➣ [˹𝐌ᴜꜱɪᴄ™ ˹ʙꜱ](https://t.me/vcmusicro_bot)**
+
 ## 💡 Quick Deploy
 
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy)
