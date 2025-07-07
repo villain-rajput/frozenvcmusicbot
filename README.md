@@ -1,7 +1,7 @@
 ━━━━━━━━━━━━━━━━━━━━
 
 <h2 align="center">
-    ──「 ⛦🦋 Frozen Music VC Bot 🦋⛦ 」──
+    ──「 ⛦🦋 Frozen Music 🦋⛦ 」──
 </h2>
 
 <p align="center">
