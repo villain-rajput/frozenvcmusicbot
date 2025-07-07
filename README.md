@@ -43,7 +43,7 @@
 ## ⚡ One-click Setup
 
 <p align="center">
-<a href="https://github.com/prashantsahlot/frozenvcmusicbot/generate"><img src="https://img.shields.io/badge/-Fork%20Repo-black?style=for-the-badge&logo=github"></a>
+<a href="https://github.com/prashantsahlot/frozenvcmusicbot/fork"><img src="https://img.shields.io/badge/-Fork%20Repo-black?style=for-the-badge&logo=github"></a>
 </p>
 
 ---
