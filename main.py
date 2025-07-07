@@ -626,6 +626,24 @@ async def process_play_command(message: Message, query: str):
     chat_id = message.chat.id
     processing_message = await message.reply("❄️")
 
+    # --- ensure assistant is in the chat before we queue/play anything ----
+    status = await is_assistant_in_chat(chat_id)
+    if status is False:
+        # try to fetch an invite link
+        invite_link = await extract_invite_link(bot, chat_id)
+        if not invite_link:
+            return await processing_message.edit(
+                "❌ I can’t get an invite link for this chat. "
+                "Please add @xyz92929 (the assistant) manually."
+            )
+        invited = await invite_assistant(chat_id, invite_link, processing_message)
+        if not invited:
+            return  # invite_assistant already edited the message with the error
+    elif status == "banned":
+        return await processing_message.edit(
+            "❌ The assistant is banned in this chat. Please unban it first."
+        )
+
     # Convert short URLs to full YouTube URLs
     if "youtu.be" in query:
         m = re.search(r"youtu\.be/([^?&]+)", query)
@@ -653,8 +671,7 @@ async def process_play_command(message: Message, query: str):
     if isinstance(result, dict) and "playlist" in result:
         playlist_items = result["playlist"]
         if not playlist_items:
-            await processing_message.edit("❌ No videos found in the playlist.")
-            return
+            return await processing_message.edit("❌ No videos found in the playlist.")
 
         chat_containers.setdefault(chat_id, [])
         for item in playlist_items:
@@ -664,7 +681,7 @@ async def process_play_command(message: Message, query: str):
                 "title": item["title"],
                 "duration": iso8601_to_human_readable(item["duration"]),
                 "duration_seconds": secs,
-                "requester": message.from_user.first_name if message.from_user else "Unknown",
+                "requester": message.from_user.first_name or "Unknown",
                 "thumbnail": item["thumbnail"]
             })
 
@@ -688,17 +705,15 @@ async def process_play_command(message: Message, query: str):
     else:
         video_url, title, duration_iso, thumb = result
         if not video_url:
-            await processing_message.edit(
+            return await processing_message.edit(
                 "❌ Could not find the song. Try another query.\nSupport: @frozensupport1"
             )
-            return
 
         secs = isodate.parse_duration(duration_iso).total_seconds()
         if secs > MAX_DURATION_SECONDS:
-            await processing_message.edit(
-                "❌ Streams longer than 10 min are not allowed. We are facing some server issues—please try later."
+            return await processing_message.edit(
+                "❌ Streams longer than 20 min are not allowed. We are facing some server issues—please try later."
             )
-            return
 
         readable = iso8601_to_human_readable(duration_iso)
         chat_containers.setdefault(chat_id, [])
@@ -707,7 +722,7 @@ async def process_play_command(message: Message, query: str):
             "title": title,
             "duration": readable,
             "duration_seconds": secs,
-            "requester": message.from_user.first_name if message.from_user else "Unknown",
+            "requester": message.from_user.first_name or "Unknown",
             "thumbnail": thumb
         })
 
@@ -723,7 +738,7 @@ async def process_play_command(message: Message, query: str):
                 f"✨ Added to queue :\n\n"
                 f"**❍ Title ➥** {title}\n"
                 f"**❍ Time ➥** {readable}\n"
-                f"**❍ By ➥ ** {message.from_user.first_name if message.from_user else 'Unknown'}\n"
+                f"**❍ By ➥ ** {message.from_user.first_name or 'Unknown'}\n"
                 f"**Queue number:** {len(chat_containers[chat_id]) - 1}",
                 reply_markup=queue_buttons
             )
