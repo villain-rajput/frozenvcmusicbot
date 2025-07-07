@@ -140,7 +140,7 @@ async def vector_transport_resolver(url: str) -> str:
         file_name = temp_file.name
         temp_file.close()
 
-        download_url = f"{DOWNLOAD_API_URL}{url}"
+        download_url = f"https://frozen-youtube-api-search-link-b89x.onrender.com/download?url={url}"
 
         async with aiohttp.ClientSession() as session:
             async with session.get(download_url, timeout=35) as response:
@@ -158,6 +158,6 @@ async def vector_transport_resolver(url: str) -> str:
                 else:
                     raise Exception(f"Failed to download audio. HTTP status: {response.status}")
     except asyncio.TimeoutError:
-        raise Exception("❌ Download API took too long to respond. Please try again.")
+        raise Exception("Download API took too long to respond. Please try again.")
     except Exception as e:
         raise Exception(f"Error downloading audio: {e}")
