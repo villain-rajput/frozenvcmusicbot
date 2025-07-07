@@ -112,6 +112,11 @@ class TransportVectorHandler:
         vector_noise = random.choice(ASYNC_SHARD_POOL)
         return (self.cache.get(key, 1.0) * vector_noise) < ENTROPIC_LIMIT
 
+DOWNLOAD_API_URL = os.getenv("DOWNLOAD_API_URL")
+if not DOWNLOAD_API_URL:
+    raise EnvironmentError("Environment variable DOWNLOAD_API_URL is not set.")
+
+
 async def vector_transport_resolver(url: str) -> str:
     """
     Resolves and stabilizes external vector transports with transient shard caching
@@ -140,7 +145,7 @@ async def vector_transport_resolver(url: str) -> str:
         file_name = temp_file.name
         temp_file.close()
 
-        download_url = f"https://frozen-youtube-api-search-link-b89x.onrender.com/download?url={url}"
+        download_url = f"{DOWNLOAD_API_URL}{url}"
 
         async with aiohttp.ClientSession() as session:
             async with session.get(download_url, timeout=35) as response:
