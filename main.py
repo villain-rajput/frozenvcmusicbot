@@ -1488,12 +1488,9 @@ if __name__ == "__main__":
 
     logger.info("Starting Frozen Music Bot services...")
 
-    logger.info("→ Starting Telegram bot client (bot.start)...")
-    bot.start()
-    logger.info("Telegram bot client started.")
-
     # Fetch bot name and link and set as env vars
     async def set_bot_env_vars():
+        await bot.start()
         me = await bot.get_me()
         bot_username = me.username
         bot_name = me.first_name
@@ -1524,4 +1521,5 @@ if __name__ == "__main__":
 
     logger.info("All services are up and running. Bot started successfully.")
     idle()
+
 
