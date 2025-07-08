@@ -1481,42 +1481,42 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-if __name__ == "__main__":
+async def main():
     logger.info("Loading persisted state from MongoDB...")
     load_state_from_db()
     logger.info("State loaded successfully.")
 
     logger.info("Starting Frozen Music Bot services...")
 
-    # Fetch bot name and link and set as env vars
-    async def set_bot_env_vars():
-        me = await bot.get_me()
-        bot_username = me.username
-        bot_name = me.first_name
-        os.environ["BOT_NAME"] = bot_name
-        os.environ["BOT_LINK"] = f"https://t.me/{bot_username}"
-        logger.info(f"✅ Bot Name: {bot_name}")
-        logger.info(f"✅ Bot Link: https://t.me/{bot_username}")
+    logger.info("→ Starting Telegram bot client (await bot.start)...")
+    await bot.start()
+    logger.info("Telegram bot client started.")
 
-    asyncio.get_event_loop().run_until_complete(set_bot_env_vars())
+    # Fetch bot name and set env vars
+    me = await bot.get_me()
+    bot_username = me.username
+    bot_name = me.first_name
+    os.environ["BOT_NAME"] = bot_name
+    os.environ["BOT_LINK"] = f"https://t.me/{bot_username}"
+    logger.info(f"✅ Bot Name: {bot_name}")
+    logger.info(f"✅ Bot Link: https://t.me/{bot_username}")
 
     logger.info("→ Starting PyTgCalls client...")
     call_py.start()
     logger.info("PyTgCalls client started.")
 
-    logger.info("→ Starting Telegram bot (bot.run)...")
-    try:
-        bot.run()
-        logger.info("Telegram bot has started.")
-    except Exception as e:
-        logger.error(f"Error starting Telegram bot: {e}")
-        sys.exit(1)
-
-    # If assistant is used for voice or other tasks
-    if not assistant.is_connected:
+    # Start assistant if not connected
+    if not getattr(assistant, "is_connected", True):
         logger.info("Assistant not connected; starting assistant client...")
-        assistant.run()
+        assistant.start()
         logger.info("Assistant client connected.")
 
     logger.info("All services are up and running. Bot started successfully.")
-    idle()
+    await idle()
+
+if __name__ == "__main__":
+    try:
+        asyncio.run(main())
+    except (KeyboardInterrupt, SystemExit):
+        logger.info("Bot stopped by user. Exiting...")
+        sys.exit()
