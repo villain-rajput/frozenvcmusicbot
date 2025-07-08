@@ -1498,6 +1498,7 @@ if __name__ == "__main__":
         os.environ["BOT_LINK"] = f"https://t.me/{bot_username}"
         logger.info(f"✅ Bot Name: {bot_name}")
         logger.info(f"✅ Bot Link: https://t.me/{bot_username}")
+        await bot.stop()  # Stop after fetching info so we can start cleanly with run()
 
     asyncio.get_event_loop().run_until_complete(set_bot_env_vars())
 
@@ -1510,8 +1511,11 @@ if __name__ == "__main__":
         bot.run()
         logger.info("Telegram bot has started.")
     except Exception as e:
-        logger.error(f"Error starting Telegram bot: {e}")
-        sys.exit(1)
+        if "already connected" in str(e).lower():
+            logger.warning("Bot is already connected. Continuing...")
+        else:
+            logger.error(f"Error starting Telegram bot: {e}")
+            sys.exit(1)
 
     # If assistant is used for voice or other tasks
     if not assistant.is_connected:
@@ -1521,5 +1525,6 @@ if __name__ == "__main__":
 
     logger.info("All services are up and running. Bot started successfully.")
     idle()
+
 
 
