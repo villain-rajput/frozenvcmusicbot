@@ -1488,20 +1488,6 @@ if __name__ == "__main__":
 
     logger.info("Starting Frozen Music Bot services...")
 
-    # Fetch bot name and link and set as env vars
-    async def set_bot_env_vars():
-        await bot.start()
-        me = await bot.get_me()
-        bot_username = me.username
-        bot_name = me.first_name
-        os.environ["BOT_NAME"] = bot_name
-        os.environ["BOT_LINK"] = f"https://t.me/{bot_username}"
-        logger.info(f"✅ Bot Name: {bot_name}")
-        logger.info(f"✅ Bot Link: https://t.me/{bot_username}")
-        await bot.stop()  # Stop after fetching info so we can start cleanly with run()
-
-    asyncio.get_event_loop().run_until_complete(set_bot_env_vars())
-
     logger.info("→ Starting PyTgCalls client...")
     call_py.start()
     logger.info("PyTgCalls client started.")
@@ -1511,11 +1497,14 @@ if __name__ == "__main__":
         bot.run()
         logger.info("Telegram bot has started.")
     except Exception as e:
-        if "already connected" in str(e).lower():
-            logger.warning("Bot is already connected. Continuing...")
-        else:
-            logger.error(f"Error starting Telegram bot: {e}")
-            sys.exit(1)
+        logger.error(f"Error starting Telegram bot: {e}")
+        sys.exit(1)
+
+    # Fetch bot name and link and set default values from environment
+    BOT_NAME = os.environ.get("BOT_NAME", "Frozen Music")
+    BOT_LINK = os.environ.get("BOT_LINK", "https://t.me/vcmusiclubot")
+    logger.info(f"Bot name set to: {BOT_NAME}")
+    logger.info(f"Bot link set to: {BOT_LINK}")
 
     # If assistant is used for voice or other tasks
     if not assistant.is_connected:
@@ -1524,7 +1513,10 @@ if __name__ == "__main__":
         logger.info("Assistant client connected.")
 
     logger.info("All services are up and running. Bot started successfully.")
+    
+
     idle()
+
 
 
 
