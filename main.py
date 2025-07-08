@@ -317,6 +317,9 @@ async def fetch_youtube_link_backup(query):
                 )
     except Exception as e:
         raise Exception(f"Backup Search API error: {e}")
+    
+BOT_NAME = os.environ.get("BOT_NAME", "Frozen Music")
+BOT_LINK = os.environ.get("BOT_LINK", "https://t.me/vcmusiclubot")
 
 
     
@@ -349,22 +352,19 @@ def to_bold_unicode(text: str) -> str:
 
 @bot.on_message(filters.command("start"))
 async def start_handler(_, message):
-    # Extract and style the user's first name dynamically
     user_id = message.from_user.id
     raw_name = message.from_user.first_name or ""
     styled_name = to_bold_unicode(raw_name)
     user_link = f"[{styled_name}](tg://user?id={user_id})"
 
-    # Style button texts
     add_me_text = to_bold_unicode("Add Me")
     updates_text = to_bold_unicode("Updates")
     support_text = to_bold_unicode("Support")
     help_text = to_bold_unicode("Help")
 
-    # Caption with bold Unicode font for headings and feature labels
     caption = (
         f"👋 нєу {user_link} 💠, 🥀\n\n"
-        ">🎶 𝗪𝗘𝗟𝗖𝗢𝗠𝗘 𝗧𝗢 𝗙𝗥𝗢𝗭𝗘𝗡 𝗠𝗨𝗦𝗜𝗖! 🎵\n"
+        f">🎶 𝗪𝗘𝗟𝗖𝗢𝗠𝗘 𝗧𝗢 {BOT_NAME.upper()}! 🎵\n"
         ">🚀 𝗧𝗢𝗣-𝗡𝗢𝗧𝗖𝗛 24×7 𝗨𝗣𝗧𝗜𝗠𝗘 & 𝗦𝗨𝗣𝗣𝗢𝗥𝗧\n"
         ">🔊 𝗖𝗥𝗬𝗦𝗧𝗔𝗟-𝗖𝗟𝗘𝗔𝗥 𝗔𝗨𝗗𝗜𝗢\n"
         ">🎧 𝗦𝗨𝗣𝗣𝗢𝗥𝗧𝗘𝗗 𝗣𝗟𝗔𝗧𝗙𝗢𝗥𝗠𝗦: YouTube | Spotify | Resso | Apple Music | SoundCloud\n"
@@ -376,7 +376,7 @@ async def start_handler(_, message):
 
     buttons = [
         [
-            InlineKeyboardButton(f"➕ {add_me_text}", url="https://t.me/vcmusiclubot?startgroup=true"),
+            InlineKeyboardButton(f"➕ {add_me_text}", url=f"{BOT_LINK}?startgroup=true"),
             InlineKeyboardButton(f"📢 {updates_text}", url="https://t.me/vibeshiftbots")
         ],
         [
@@ -404,6 +404,7 @@ async def start_handler(_, message):
             broadcast_collection.insert_one({"chat_id": chat_id, "type": "group"})
 
 
+
 @bot.on_callback_query(filters.regex("^go_back$"))
 async def go_back_callback(_, callback_query):
     user_id = callback_query.from_user.id
@@ -411,7 +412,6 @@ async def go_back_callback(_, callback_query):
     styled_name = to_bold_unicode(raw_name)
     user_link = f"[{styled_name}](tg://user?id={user_id})"
 
-    # Style button texts
     add_me_text = to_bold_unicode("Add Me")
     updates_text = to_bold_unicode("Updates")
     support_text = to_bold_unicode("Support")
@@ -419,7 +419,7 @@ async def go_back_callback(_, callback_query):
 
     caption = (
         f"👋 нєу {user_link} 💠, 🥀\n\n"
-        ">🎶 𝗪𝗘𝗟𝗖𝗢𝗠𝗘 𝗧𝗢 𝗙𝗥𝗢𝗭𝗘𝗡 𝗠𝗨𝗦𝗜𝗖! 🎵\n"
+        f">🎶 𝗪𝗘𝗟𝗖𝗢𝗠𝗘 𝗧𝗢 {BOT_NAME.upper()}! 🎵\n"
         ">🚀 𝗧𝗢𝗣-𝗡𝗢𝗧𝗖𝗛 24×7 𝗨𝗣𝗧𝗜𝗠𝗘 & 𝗦𝗨𝗣𝗣𝗢𝗥𝗧\n"
         ">🔊 𝗖𝗥𝗬𝗦𝗧𝗔𝗟-𝗖𝗟𝗘𝗔𝗥 𝗔𝗨𝗗𝗜𝗢\n"
         ">🎧 𝗦𝗨𝗣𝗣𝗢𝗥𝗧𝗘𝗗 𝗣𝗟𝗔𝗧𝗙𝗢𝗥𝗠𝗦: YouTube | Spotify | Resso | Apple Music | SoundCloud\n"
@@ -431,7 +431,7 @@ async def go_back_callback(_, callback_query):
 
     buttons = [
         [
-            InlineKeyboardButton(f"➕ {add_me_text}", url="https://t.me/vcmusiclubot?startgroup=true"),
+            InlineKeyboardButton(f"➕ {add_me_text}", url=f"{BOT_LINK}?startgroup=true"),
             InlineKeyboardButton(f"📢 {updates_text}", url="https://t.me/vibeshiftbots")
         ],
         [
@@ -441,12 +441,12 @@ async def go_back_callback(_, callback_query):
     ]
     reply_markup = InlineKeyboardMarkup(buttons)
 
-    # Use edit_caption to keep Markdown link for mention
     await callback_query.message.edit_caption(
         caption=caption,
         parse_mode=ParseMode.MARKDOWN,
         reply_markup=reply_markup
     )
+
 
 
 @bot.on_callback_query(filters.regex("^show_help$"))
@@ -1487,6 +1487,18 @@ if __name__ == "__main__":
     logger.info("State loaded successfully.")
 
     logger.info("Starting Frozen Music Bot services...")
+
+    # Fetch bot name and link and set as env vars
+    async def set_bot_env_vars():
+        me = await bot.get_me()
+        bot_username = me.username
+        bot_name = me.first_name
+        os.environ["BOT_NAME"] = bot_name
+        os.environ["BOT_LINK"] = f"https://t.me/{bot_username}"
+        logger.info(f"✅ Bot Name: {bot_name}")
+        logger.info(f"✅ Bot Link: https://t.me/{bot_username}")
+
+    asyncio.get_event_loop().run_until_complete(set_bot_env_vars())
 
     logger.info("→ Starting PyTgCalls client...")
     call_py.start()
