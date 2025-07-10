@@ -323,19 +323,24 @@ BOT_LINK = os.environ.get("BOT_LINK", "https://t.me/vcmusiclubot")
 
 
     
-async def invite_assistant(chat_id, invite_link, processing_message):
-    """
-    Internally invite the assistant to the chat by using the assistant client to join the chat.
-    If an error occurs, it returns False and displays the exact error.
-    """
+from pyrogram.errors import BadRequest
+
+async def invite_assistant(chat_id: int, invite_link: str, processing_message):
     try:
-        # Use the assistant client to join the chat via the invite link.
-        await assistant.join_chat(invite_link)
-        return True
-    except Exception as e:
-        error_message = f"❌ Error while inviting assistant: {str(e)}"
-        await processing_message.edit(error_message)
+        # this is whatever Pyrogram call you use to join by invite link
+        await bot.import_chat_invite_link(invite_link)
+    except BadRequest as e:
+        # if the assistant is already a member, Pyrogram raises USER_ALREADY_PARTICIPANT
+        if "USER_ALREADY_PARTICIPANT" in e.message:
+            # treat as success
+            return True
+        # otherwise show the error to the user
+        await processing_message.edit(
+            f"❌ Could not invite assistant: {e.message}"
+        )
         return False
+    return True
+
 
 
 # Helper to convert ASCII letters to Unicode bold
@@ -636,9 +641,24 @@ async def process_play_command(message: Message, query: str):
                 "❌ I can’t get an invite link for this chat. "
                 "Please add @xyz92929 (the assistant) manually."
             )
-        invited = await invite_assistant(chat_id, invite_link, processing_message)
+
+        # inline-invite + catch USER_ALREADY_PARTICIPANT
+        try:
+            await bot.import_chat_invite_link(invite_link)
+            invited = True
+        except BadRequest as e:
+            if "USER_ALREADY_PARTICIPANT" in e.message:
+                # already in chat → treat as success
+                invited = True
+            else:
+                invited = False
+                await processing_message.edit(
+                    f"❌ Could not invite assistant: {e.message}"
+                )
+
         if not invited:
-            return  # invite_assistant already edited the message with the error
+            return  # already reported
+
     elif status == "banned":
         return await processing_message.edit(
             "❌ The assistant is banned in this chat. Please unban it first."
