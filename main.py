@@ -629,7 +629,7 @@ async def play_handler(_, message: Message):
 
 async def process_play_command(message: Message, query: str):
     chat_id = message.chat.id
-    processing_message = await message.reply("❄️")
+    processing_message = await message.reply("✨")
 
     # --- ensure assistant is in the chat before we queue/play anything ----
     status = await is_assistant_in_chat(chat_id)
