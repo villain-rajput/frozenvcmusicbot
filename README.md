@@ -1,8 +1,4 @@
 ━━━━━━━━━━━━━━━━━━━━
-
-markdown
-Copy
-Edit
 <h2 align="center">
     ──「 ⛦🦋 Frozen Music 🦋⛦ 」──
 </h2>
