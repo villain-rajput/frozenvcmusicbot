@@ -330,19 +330,35 @@ async def fetch_youtube_link_backup(query):
 BOT_NAME = os.environ.get("BOT_NAME", "Frozen Music")
 BOT_LINK = os.environ.get("BOT_LINK", "https://t.me/vcmusiclubot")
 
+from pyrogram.errors import UserAlreadyParticipant, RPCError
+
 async def invite_assistant(chat_id, invite_link, processing_message):
     """
     Internally invite the assistant to the chat by using the assistant client to join the chat.
-    If an error occurs, it returns False and displays the exact error.
+    If the assistant is already in the chat, treat as success.
+    On other errors, display and return False.
     """
     try:
-        # Use the assistant client to join the chat via the invite link.
+        # Attempt to join via invite link
         await assistant.join_chat(invite_link)
         return True
-    except Exception as e:
-        error_message = f"❌ Error while inviting assistant: {str(e)}"
+
+    except UserAlreadyParticipant:
+        # Assistant is already in the chat, no further action needed
+        return True
+
+    except RPCError as e:
+        # Handle other Pyrogram RPC errors
+        error_message = f"❌ Error while inviting assistant: Telegram says: {e.code} {e.error_message}"
         await processing_message.edit(error_message)
         return False
+
+    except Exception as e:
+        # Catch-all for any unexpected exceptions
+        error_message = f"❌ Unexpected error while inviting assistant: {str(e)}"
+        await processing_message.edit(error_message)
+        return False
+
 
 # Helper to convert ASCII letters to Unicode bold
 def to_bold_unicode(text: str) -> str:
