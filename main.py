@@ -632,6 +632,22 @@ async def process_play_command(message: Message, query: str):
     chat_id = message.chat.id
     processing_message = await message.reply("❄️")
 
+    # --- ensure assistant is in the chat before we queue/play anything ----
+    status = await is_assistant_in_chat(chat_id)
+    if status == "banned":
+        await processing_message.edit("❌ Assistant is banned from this chat.")
+        return
+    if status is False:
+        # try to fetch an invite link to add the assistant
+        invite_link = await extract_invite_link(bot, chat_id)
+        if not invite_link:
+            await processing_message.edit("❌ Could not obtain an invite link to add the assistant.")
+            return
+        invited = await invite_assistant(chat_id, invite_link, processing_message)
+        if not invited:
+            # invite_assistant handles error editing
+            return
+
     # Convert short URLs to full YouTube URLs
     if "youtu.be" in query:
         m = re.search(r"youtu\.be/([^?&]+)", query)
