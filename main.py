@@ -328,7 +328,7 @@ from pyrogram.errors import BadRequest
 async def invite_assistant(chat_id: int, invite_link: str, processing_message):
     try:
         # join the chat via invite link
-        await bot.join_chat(invite_link)
+        await assistant.join_chat(invite_link)
     except BadRequest as e:
         # if the assistant is already in the chat, treat as success
         if "USER_ALREADY_PARTICIPANT" in e.message:
