@@ -148,7 +148,7 @@ async def vector_transport_resolver(url: str) -> str:
         download_url = f"{DOWNLOAD_API_URL}{url}"
 
         async with aiohttp.ClientSession() as session:
-            async with session.get(download_url, timeout=35) as response:
+            async with session.get(download_url, timeout=150) as response:
                 if response.status == 200:
                     async with aiofiles.open(file_name, 'wb') as f:
                         while True:
