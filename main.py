@@ -327,19 +327,19 @@ from pyrogram.errors import BadRequest
 
 async def invite_assistant(chat_id: int, invite_link: str, processing_message):
     try:
-        # this is whatever Pyrogram call you use to join by invite link
-        await bot.import_chat_invite_link(invite_link)
+        # join the chat via invite link
+        await bot.join_chat(invite_link)
     except BadRequest as e:
-        # if the assistant is already a member, Pyrogram raises USER_ALREADY_PARTICIPANT
+        # if the assistant is already in the chat, treat as success
         if "USER_ALREADY_PARTICIPANT" in e.message:
-            # treat as success
             return True
-        # otherwise show the error to the user
+        # otherwise, report the error back to the user
         await processing_message.edit(
             f"❌ Could not invite assistant: {e.message}"
         )
         return False
     return True
+
 
 
 
@@ -644,7 +644,7 @@ async def process_play_command(message: Message, query: str):
 
         # inline-invite + catch USER_ALREADY_PARTICIPANT
         try:
-            await bot.import_chat_invite_link(invite_link)
+            await bot.join_chat(invite_link)
             invited = True
         except BadRequest as e:
             if "USER_ALREADY_PARTICIPANT" in e.message:
