@@ -99,9 +99,18 @@ assistant = Client("assistant_account", session_string=ASSISTANT_SESSION)
 call_py = PyTgCalls(assistant)
 
 
-ASSISTANT_USERNAME = "@xyz92929"
-ASSISTANT_CHAT_ID = 7634862283
-API_ASSISTANT_USERNAME = "@xyz92929"
+ASSISTANT_USERNAME = os.getenv("ASSISTANT_USERNAME")
+ASSISTANT_CHAT_ID = os.getenv("ASSISTANT_CHAT_ID")
+API_ASSISTANT_USERNAME = os.getenv("API_ASSISTANT_USERNAME")
+
+if not ASSISTANT_USERNAME or not ASSISTANT_CHAT_ID or not API_ASSISTANT_USERNAME:
+    print("Assistant username and chat ID not set")
+else:
+    # Convert chat ID to integer if needed
+    try:
+        ASSISTANT_CHAT_ID = int(ASSISTANT_CHAT_ID)
+    except ValueError:
+        print("Invalid ASSISTANT_CHAT_ID: not an integer")
 
 # API Endpoints
 API_URL = os.environ.get("API_URL")
@@ -321,27 +330,19 @@ async def fetch_youtube_link_backup(query):
 BOT_NAME = os.environ.get("BOT_NAME", "Frozen Music")
 BOT_LINK = os.environ.get("BOT_LINK", "https://t.me/vcmusiclubot")
 
-
-    
-from pyrogram.errors import BadRequest
-
-async def invite_assistant(chat_id: int, invite_link: str, processing_message):
+async def invite_assistant(chat_id, invite_link, processing_message):
+    """
+    Internally invite the assistant to the chat by using the assistant client to join the chat.
+    If an error occurs, it returns False and displays the exact error.
+    """
     try:
-        # join the chat via invite link
+        # Use the assistant client to join the chat via the invite link.
         await assistant.join_chat(invite_link)
-    except BadRequest as e:
-        # if the assistant is already in the chat, treat as success
-        if "USER_ALREADY_PARTICIPANT" in e.message:
-            return True
-        # otherwise, report the error back to the user
-        await processing_message.edit(
-            f"❌ Could not invite assistant: {e.message}"
-        )
+        return True
+    except Exception as e:
+        error_message = f"❌ Error while inviting assistant: {str(e)}"
+        await processing_message.edit(error_message)
         return False
-    return True
-
-
-
 
 # Helper to convert ASCII letters to Unicode bold
 def to_bold_unicode(text: str) -> str:
