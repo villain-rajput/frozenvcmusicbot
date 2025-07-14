@@ -62,7 +62,6 @@
 </h3>
 
 - Get your [Necessary Variables](https://github.com/prashantsahlot/frozenvcmusicbot/blob/master/frozen.env)
-
 - <p align="center">
 <a href="https://www.youtube.com/watch?v=LSlKMWmhh20"><img src="https://img.shields.io/badge/Watch%20on-YouTube-red?style=for-the-badge&logo=youtube" alt="YouTube Tutorial"/></a>
 </p>
