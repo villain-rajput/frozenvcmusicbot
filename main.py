@@ -1411,8 +1411,8 @@ async def broadcast_handler(_, message):
 
 
 
-@bot.on_message(filters.command("frozen_check") 
-async def frozen_check_command(_, message):
+@bot.on_message(filters.command("frozen_check"))
+async def frozen_check_command(client: Client, message):
     await message.reply_text("frozen check successful ✨")
 
 
