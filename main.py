@@ -1516,7 +1516,7 @@ async def frozen_check_loop(bot_username: str):
     while True:
         try:
             # 1) send the check command
-            await assistant.send_message(f"@{bot_username}", "/frozen_check")
+            await assistant.send_message(f"{bot_username}", "/frozen_check")
             logger.info(f"Sent /frozen_check to @{bot_username}")
 
             # 2) poll for a reply for up to 30 seconds
@@ -1524,7 +1524,7 @@ async def frozen_check_loop(bot_username: str):
             got_ok = False
 
             while time.time() < deadline:
-                msgs = await assistant.get_history(f"@{bot_username}", limit=1)
+                msgs = await assistant.get_history(f"{bot_username}", limit=1)
                 if msgs:
                     text = msgs[0].text or ""
                     if "frozen check successful ✨" in text.lower():
@@ -1567,16 +1567,10 @@ if __name__ == "__main__":
     BOT_LINK = f"https://t.me/{BOT_USERNAME}"
 
     logger.info(f"✅ Bot Name: {BOT_NAME!r}")
-    logger.info(f"✅ Bot Username: @{BOT_USERNAME}")
+    logger.info(f"✅ Bot Username: {BOT_USERNAME}")
     logger.info(f"✅ Bot Link: {BOT_LINK}")
 
-    # register the frozen-check response handler
-    assistant.add_handler(
-        filters.private & filters.user(BOT_USERNAME) & filters.regex(r"frozen check successful ✨"),
-        frozen_check_response_handler
-    )
-
-    # start the frozen‑check loop
+    # start the frozen‑check loop (no handler registration needed)
     asyncio.get_event_loop().create_task(frozen_check_loop(BOT_USERNAME))
 
     if not assistant.is_connected:
@@ -1590,6 +1584,7 @@ if __name__ == "__main__":
     bot.stop()
     logger.info("Bot stopped.")
     logger.info("✅ All services are up and running. Bot started successfully.")
+
 
 
 
