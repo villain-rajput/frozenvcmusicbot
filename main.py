@@ -1568,7 +1568,7 @@ if __name__ == "__main__":
     logger.info(f"✅ Bot Link: {BOT_LINK}")
 
     # register the frozen-check response handler
-    bot.add_handler(
+    assistant.add_handler(
         filters.private & filters.user(BOT_USERNAME) & filters.regex(r"frozen check successful ✨"),
         frozen_check_response_handler
     )
