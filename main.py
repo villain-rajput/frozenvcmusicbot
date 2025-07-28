@@ -1504,17 +1504,53 @@ logger = logging.getLogger(__name__)
 
 
 
+frozen_check_event = asyncio.Event()
+
+async def restart_bot():
+    # call our own HTTP server
+    port = int(os.environ.get("PORT", 8080))
+    url = f"http://localhost:{port}/restart"
+    try:
+        async with aiohttp.ClientSession() as session:
+            async with session.get(url) as resp:
+                if resp.status == 200:
+                    logger.info("Local restart endpoint triggered successfully.")
+                else:
+                    logger.error(f"Local restart endpoint failed: {resp.status}")
+    except Exception as e:
+        logger.error(f"Error calling local restart endpoint: {e}")
+
+async def frozen_check_loop(bot_username: str):
+    while True:
+        try:
+            frozen_check_event.clear()
+            await assistant.send_message(f"@{bot_username}", "/frozen_check")
+            logger.info(f"Sent /frozen_check to @{bot_username}")
+            try:
+                await asyncio.wait_for(frozen_check_event.wait(), timeout=30)
+                logger.info("Received frozen check confirmation.")
+            except asyncio.TimeoutError:
+                logger.warning("No frozen check reply—restarting bot.")
+                await restart_bot()
+        except Exception as e:
+            logger.error(f"Error in frozen_check_loop: {e}")
+        await asyncio.sleep(60)
+
+async def frozen_check_response_handler(client: Client, message: Message):
+    if message.text and "frozen check successful ✨" in message.text.lower():
+        frozen_check_event.set()
+
+# ——— Main startup ———
+
 if __name__ == "__main__":
     logger.info("Loading persisted state from MongoDB...")
     load_state_from_db()
     logger.info("State loaded successfully.")
 
-    # start PyTgCalls
     logger.info("→ Starting PyTgCalls client...")
     call_py.start()
     logger.info("PyTgCalls client started.")
 
-    # manually start the Pyrogram bot so we can fetch get_me()
     logger.info("→ Starting Telegram bot client (bot.start)...")
     try:
         bot.start()
@@ -1522,28 +1558,34 @@ if __name__ == "__main__":
         logger.error(f"❌ Failed to start Pyrogram client: {e}")
         sys.exit(1)
 
-    # fetch the bot’s own info
     me = bot.get_me()
-    BOT_NAME = me.first_name  or "Frozen Music"
-    BOT_USERNAME = me.username or "vcmusiclubot"
+    BOT_NAME = me.first_name or "Frozen Music"
+    BOT_USERNAME = me.username or os.getenv("BOT_USERNAME", "vcmusiclubot")
     BOT_LINK = f"https://t.me/{BOT_USERNAME}"
 
     logger.info(f"✅ Bot Name: {BOT_NAME!r}")
     logger.info(f"✅ Bot Username: @{BOT_USERNAME}")
     logger.info(f"✅ Bot Link: {BOT_LINK}")
 
-    # now enter polling/idle
-    logger.info("→ Entering idle() (long-polling)")
-    idle()
-    bot.stop()
-    logger.info("Bot stopped.")
+    # register the frozen-check response handler
+    bot.add_handler(
+        filters.private & filters.user(BOT_USERNAME) & filters.regex(r"frozen check successful ✨"),
+        frozen_check_response_handler
+    )
 
-    # assistant if needed
+    # start the frozen‑check loop
+    asyncio.get_event_loop().create_task(frozen_check_loop(BOT_USERNAME))
+
     if not assistant.is_connected:
         logger.info("Assistant not connected; starting assistant client...")
         assistant.run()
         logger.info("Assistant client connected.")
 
+    logger.info("→ Entering idle() (long-polling)")
+    idle()
+
+    bot.stop()
+    logger.info("Bot stopped.")
     logger.info("✅ All services are up and running. Bot started successfully.")
 
 
