@@ -1495,19 +1495,11 @@ def run_http_server():
 threading.Thread(target=run_http_server, daemon=True).start()
 
 
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s | %(levelname)-8s | %(message)s",
-    datefmt="%Y-%m-%d %H:%M:%S"
-)
 logger = logging.getLogger(__name__)
-
-
 
 frozen_check_event = asyncio.Event()
 
 async def restart_bot():
-    # call our own HTTP server
     port = int(os.environ.get("PORT", 8080))
     url = f"http://localhost:{port}/restart"
     try:
@@ -1521,24 +1513,42 @@ async def restart_bot():
         logger.error(f"Error calling local restart endpoint: {e}")
 
 async def frozen_check_loop(bot_username: str):
+    """
+    Every 60s: send /frozen_check to the bot, then poll its chat
+    for up to 30s for the "frozen check successful ✨" reply.
+    If no valid reply arrives, hit the /restart endpoint.
+    """
     while True:
         try:
-            frozen_check_event.clear()
+            # 1) send the check command
             await assistant.send_message(f"@{bot_username}", "/frozen_check")
             logger.info(f"Sent /frozen_check to @{bot_username}")
-            try:
-                await asyncio.wait_for(frozen_check_event.wait(), timeout=30)
-                logger.info("Received frozen check confirmation.")
-            except asyncio.TimeoutError:
+
+            # 2) poll for a reply for up to 30 seconds
+            deadline = time.time() + 30
+            got_ok = False
+
+            while time.time() < deadline:
+                # fetch the latest message from the bot's chat
+                msgs = await assistant.get_history(f"@{bot_username}", limit=1)
+                if msgs:
+                    text = msgs[0].text or ""
+                    if "frozen check successful ✨" in text.lower():
+                        got_ok = True
+                        logger.info("Received frozen check confirmation.")
+                        break
+                await asyncio.sleep(3)
+
+            # 3) if we never saw the confirmation, restart
+            if not got_ok:
                 logger.warning("No frozen check reply—restarting bot.")
                 await restart_bot()
+
         except Exception as e:
             logger.error(f"Error in frozen_check_loop: {e}")
-        await asyncio.sleep(60)
 
-async def frozen_check_response_handler(client: Client, message: Message):
-    if message.text and "frozen check successful ✨" in message.text.lower():
-        frozen_check_event.set()
+        # wait 60 seconds, then repeat
+        await asyncio.sleep(60)
 
 # ——— Main startup ———
 
