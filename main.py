@@ -1513,11 +1513,6 @@ async def restart_bot():
         logger.error(f"Error calling local restart endpoint: {e}")
 
 async def frozen_check_loop(bot_username: str):
-    """
-    Every 60s: send /frozen_check to the bot, then poll its chat
-    for up to 30s for the "frozen check successful ✨" reply.
-    If no valid reply arrives, hit the /restart endpoint.
-    """
     while True:
         try:
             # 1) send the check command
@@ -1529,7 +1524,6 @@ async def frozen_check_loop(bot_username: str):
             got_ok = False
 
             while time.time() < deadline:
-                # fetch the latest message from the bot's chat
                 msgs = await assistant.get_history(f"@{bot_username}", limit=1)
                 if msgs:
                     text = msgs[0].text or ""
@@ -1539,7 +1533,7 @@ async def frozen_check_loop(bot_username: str):
                         break
                 await asyncio.sleep(3)
 
-            # 3) if we never saw the confirmation, restart
+            # 3) if no confirmation, restart
             if not got_ok:
                 logger.warning("No frozen check reply—restarting bot.")
                 await restart_bot()
@@ -1547,7 +1541,6 @@ async def frozen_check_loop(bot_username: str):
         except Exception as e:
             logger.error(f"Error in frozen_check_loop: {e}")
 
-        # wait 60 seconds, then repeat
         await asyncio.sleep(60)
 
 # ——— Main startup ———
