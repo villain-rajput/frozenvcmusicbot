@@ -1411,7 +1411,7 @@ async def broadcast_handler(_, message):
 
 
 
-@bot.on_message(filters.command("frozen_check") & filters.chat(ASSISTANT_CHAT_ID))
+@bot.on_message(filters.command("frozen_check") 
 async def frozen_check_command(_, message):
     await message.reply_text("frozen check successful ✨")
 
