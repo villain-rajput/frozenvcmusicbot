@@ -280,8 +280,9 @@ def iso8601_to_human_readable(iso_duration):
 
 async def fetch_youtube_link(query):
     try:
+        url = f"https://teenage-liz-frozzennbotss-61567ab4.koyeb.app/search?title={query}"
         async with aiohttp.ClientSession() as session:
-            async with session.get(f"{API_URL}{query}") as response:
+            async with session.get(url) as response:
                 if response.status == 200:
                     data = await response.json()
                     # Check if the API response contains a playlist
