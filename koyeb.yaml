@@ -13,11 +13,10 @@ services:
     env:
       API_HASH: ""
       API_ID: ""
-      API_URL: ""
       ASSISTANT_SESSION: ""
       BOT_TOKEN: ""
-      DOWNLOAD_API_URL: ""
       OWNER_ID: ""
       MongoDB_url: ""
       ASSISTANT_USERNAME: ""
       ASSISTANT_CHAT_ID: ""
+
