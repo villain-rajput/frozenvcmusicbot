@@ -6,11 +6,11 @@
   <img src="https://frozen-imageapi.lagendplayersyt.workers.dev/file/37559867-6337-433a-86f7-d764cd0ade54.jpg">
 </p>
 <p align="center">
-<a href="https://github.com/prashantsahlot/frozenvcmusicbot/stargazers"><img src="https://img.shields.io/github/stars/prashantsahlot/frozenvcmusicbot?color=black&logo=github&logoColor=black&style=for-the-badge" alt="Stars" /></a>
-<a href="https://github.com/prashantsahlot/frozenvcmusicbot/network/members"> <img src="https://img.shields.io/github/forks/prashantsahlot/frozenvcmusicbot?color=black&logo=github&logoColor=black&style=for-the-badge" /></a>
-<a href="https://github.com/prashantsahlot/frozenvcmusicbot/blob/master/LICENSE"> <img src="https://img.shields.io/badge/License-Frozen%20Protect-blueviolet?style=for-the-badge" alt="License" /> </a>
+<a href="https://github.com/kustbots//frozenvcmusicbot/stargazers"><img src="https://img.shields.io/github/stars/prashantsahlot/frozenvcmusicbot?color=black&logo=github&logoColor=black&style=for-the-badge" alt="Stars" /></a>
+<a href="https://github.com/kustbots//frozenvcmusicbot/network/members"> <img src="https://img.shields.io/github/forks/prashantsahlot/frozenvcmusicbot?color=black&logo=github&logoColor=black&style=for-the-badge" /></a>
+<a href="https://github.com/kustbots//frozenvcmusicbot/blob/master/LICENSE"> <img src="https://img.shields.io/badge/License-Frozen%20Protect-blueviolet?style=for-the-badge" alt="License" /> </a>
 <a href="https://www.python.org/"> <img src="https://img.shields.io/badge/Written%20in-Python-orange?style=for-the-badge&logo=python" alt="Python" /> </a>
-<a href="https://github.com/prashantsahlot/frozenvcmusicbot/commits/main"> <img src="https://img.shields.io/github/last-commit/prashantsahlot/frozenvcmusicbot?color=blue&logo=github&logoColor=green&style=for-the-badge" /></a>
+<a href="https://github.com/kustbots/frozenvcmusicbot/commits/main"> <img src="https://img.shields.io/github/last-commit/prashantsahlot/frozenvcmusicbot?color=blue&logo=github&logoColor=green&style=for-the-badge" /></a>
 </p>
 
 ---
@@ -29,10 +29,10 @@
 ## 💡 Quick Deploy
 
 <p align="center">
-<a href="https://render.com/deploy?repo=https://github.com/prashantsahlot/frozenvcmusicbot"><img src="https://img.shields.io/badge/-Deploy%20to%20Render-blueviolet?style=for-the-badge&logo=render"></a>
-<a href="https://app.koyeb.com/deploy?type=git&repository=github.com/prashantsahlot/frozenvcmusicbot&branch=main&name=frozen-music-bot"><img src="https://img.shields.io/badge/-Deploy%20to%20Koyeb-green?style=for-the-badge&logo=koyeb"></a>
-<a href="https://railway.app/new/template?template=https://github.com/prashantsahlot/frozenvcmusicbot&plugins=postgresql"><img src="https://img.shields.io/badge/-Deploy%20to%20Railway-cyan?style=for-the-badge&logo=railway"></a>
-<a href="https://heroku.com/deploy?template=https://github.com/prashantsahlot/frozenvcmusicbot"><img src="https://img.shields.io/badge/-Deploy%20to%20Heroku-purple?style=for-the-badge&logo=heroku"></a>
+<a href="https://render.com/deploy?repo=https://github.com/kustbots/frozenvcmusicbot"><img src="https://img.shields.io/badge/-Deploy%20to%20Render-blueviolet?style=for-the-badge&logo=render"></a>
+<a href="https://app.koyeb.com/deploy?type=git&repository=github.com/kustbots/frozenvcmusicbot&branch=main&name=frozen-music-bot"><img src="https://img.shields.io/badge/-Deploy%20to%20Koyeb-green?style=for-the-badge&logo=koyeb"></a>
+<a href="https://railway.app/new/template?template=https://github.com/kustbots/frozenvcmusicbot&plugins=postgresql"><img src="https://img.shields.io/badge/-Deploy%20to%20Railway-cyan?style=for-the-badge&logo=railway"></a>
+<a href="https://heroku.com/deploy?template=https://github.com/kustbots/frozenvcmusicbot"><img src="https://img.shields.io/badge/-Deploy%20to%20Heroku-purple?style=for-the-badge&logo=heroku"></a>
 </p>
 
 
@@ -41,7 +41,7 @@
 ## ⚡ One-click Setup
 
 <p align="center">
-<a href="https://github.com/prashantsahlot/frozenvcmusicbot/fork"><img src="https://img.shields.io/badge/-Fork%20Repo-black?style=for-the-badge&logo=github"></a>
+<a href="https://github.com/kustbots/frozenvcmusicbot/fork"><img src="https://img.shields.io/badge/-Fork%20Repo-black?style=for-the-badge&logo=github"></a>
 </p>
 
 ---
@@ -59,7 +59,7 @@
     ─「 ᴅᴇᴩʟᴏʏ ᴏɴ ʟᴏᴄᴀʟ ʜᴏsᴛ/ ᴠᴘs 」─
 </h3>
 
-- Get your [Necessary Variables](https://github.com/prashantsahlot/frozenvcmusicbot/blob/master/frozen.env)
+- Get your [Necessary Variables](https://github.com/kustbots/frozenvcmusicbot/blob/master/frozen.env)
 - <p align="center">
 <a href="https://www.youtube.com/watch?v=LSlKMWmhh20"><img src="https://img.shields.io/badge/Watch%20on-YouTube-red?style=for-the-badge&logo=youtube" alt="YouTube Tutorial"/></a>
 </p>
@@ -126,4 +126,4 @@
 <a href="https://t.me/Frozensupport1"><img src="https://img.shields.io/badge/-Support%20Channel-blue.svg?style=for-the-badge&logo=Telegram"></a>
 </p>
 
-- <b> _sᴩᴇᴄɪᴀʟ ᴛʜᴀɴᴋs ᴛᴏ [Frozen](https://github.com/prashantsahlot) ғᴏʀ [ᴍᴜsɪᴄ ʙᴏᴛ](https://t.me/Frozensupport1)_</b>
+- <b> _sᴩᴇᴄɪᴀʟ ᴛʜᴀɴᴋs ᴛᴏ [KustBots](https://github.com/kustbots) ғᴏʀ [ᴍᴜsɪᴄ ʙᴏᴛ](https://github.com/kustbots/frozenvcmusicbot)_</b>
