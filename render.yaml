@@ -10,13 +10,9 @@ services:
         sync: false
       - key: API_ID
         sync: false
-      - key: API_URL
-        sync: false
       - key: ASSISTANT_SESSION
         sync: false
       - key: BOT_TOKEN
-        sync: false
-      - key: DOWNLOAD_API_URL
         sync: false
       - key: OWNER_ID
         sync: false
@@ -26,3 +22,4 @@ services:
         sync: false
       - key: ASSISTANT_CHAT_ID
         sync: false
+
