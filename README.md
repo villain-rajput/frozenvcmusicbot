@@ -87,7 +87,7 @@
    ```
 5. **Clone the Repository**
    ```bash
-   git clone https://github.com/prashantsahlot/frozenvcmusicbot && cd frozenvcmusicbot
+   git clone https://github.com/kustbots/frozenvcmusicbot && cd frozenvcmusicbot
    ```
 6. **Install Requirements**
    ```bash
