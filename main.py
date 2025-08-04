@@ -1546,24 +1546,26 @@ async def frozen_check_loop(bot_username: str):
         await asyncio.sleep(60)
 
 
-async def main():
+
+
+
+if __name__ == "__main__":
     logger.info("Loading persisted state from MongoDB...")
     load_state_from_db()
     logger.info("State loaded successfully.")
 
     logger.info("→ Starting PyTgCalls client...")
-    call_py.start()
+    asyncio.run(call_py.start())  # ✅ await this properly
     logger.info("PyTgCalls client started.")
 
     logger.info("→ Starting Telegram bot client (bot.start)...")
     try:
-        await bot.start()
+        asyncio.run(bot.start())  # ✅ await this too
     except Exception as e:
         logger.error(f"❌ Failed to start Pyrogram client: {e}")
         sys.exit(1)
 
-    me = await bot.get_me()
-    global BOT_NAME, BOT_USERNAME, BOT_LINK
+    me = asyncio.run(bot.get_me())
     BOT_NAME = me.first_name or "Frozen Music"
     BOT_USERNAME = me.username or os.getenv("BOT_USERNAME", "vcmusiclubot")
     BOT_LINK = f"https://t.me/{BOT_USERNAME}"
@@ -1572,25 +1574,17 @@ async def main():
     logger.info(f"✅ Bot Username: {BOT_USERNAME}")
     logger.info(f"✅ Bot Link: {BOT_LINK}")
 
-    asyncio.create_task(frozen_check_loop(BOT_USERNAME))
+    asyncio.get_event_loop().create_task(frozen_check_loop(BOT_USERNAME))
 
-    logger.info("→ Starting assistant client...")
-    await assistant.start()
-    await precheck_channels(assistant)
-    logger.info("Assistant client started")
+    if not assistant.is_connected:
+        logger.info("Assistant not connected; starting assistant client...")
+        asyncio.run(assistant.start())                # ✅ await properly
+        asyncio.run(precheck_channels(assistant))     # ✅ your channel auto-join logic
+        logger.info("Assistant client connected.")
 
     logger.info("→ Entering idle() (long-polling)")
-    await idle()
+    asyncio.run(idle())
 
-    await bot.stop()
+    asyncio.run(bot.stop())
     logger.info("Bot stopped.")
     logger.info("✅ All services are up and running. Bot started successfully.")
-
-if __name__ == "__main__":
-    asyncio.run(main())
-
-
-
-
-
-
