@@ -100,8 +100,8 @@ assistant = Client("assistant_account", session_string=ASSISTANT_SESSION)
 call_py = PyTgCalls(assistant)
 
 
-ASSISTANT_USERNAME = os.getenv("ASSISTANT_USERNAME")
-ASSISTANT_CHAT_ID = os.getenv("ASSISTANT_CHAT_ID")
+ASSISTANT_USERNAME = None
+ASSISTANT_CHAT_ID = None
 API_ASSISTANT_USERNAME = os.getenv("API_ASSISTANT_USERNAME")
 
 if not ASSISTANT_USERNAME or not ASSISTANT_CHAT_ID or not API_ASSISTANT_USERNAME:
@@ -1547,25 +1547,23 @@ async def frozen_check_loop(bot_username: str):
 
 
 
-
-
 if __name__ == "__main__":
     logger.info("Loading persisted state from MongoDB...")
     load_state_from_db()
     logger.info("State loaded successfully.")
 
     logger.info("→ Starting PyTgCalls client...")
-    asyncio.run(call_py.start())  # ✅ await this properly
+    call_py.start()
     logger.info("PyTgCalls client started.")
 
     logger.info("→ Starting Telegram bot client (bot.start)...")
     try:
-        asyncio.run(bot.start())  # ✅ await this too
+        bot.start()
     except Exception as e:
         logger.error(f"❌ Failed to start Pyrogram client: {e}")
         sys.exit(1)
 
-    me = asyncio.run(bot.get_me())
+    me = bot.get_me()
     BOT_NAME = me.first_name or "Frozen Music"
     BOT_USERNAME = me.username or os.getenv("BOT_USERNAME", "vcmusiclubot")
     BOT_LINK = f"https://t.me/{BOT_USERNAME}"
@@ -1574,17 +1572,28 @@ if __name__ == "__main__":
     logger.info(f"✅ Bot Username: {BOT_USERNAME}")
     logger.info(f"✅ Bot Link: {BOT_LINK}")
 
+    # start the frozen‑check loop (no handler registration needed)
     asyncio.get_event_loop().create_task(frozen_check_loop(BOT_USERNAME))
 
     if not assistant.is_connected:
         logger.info("Assistant not connected; starting assistant client...")
-        asyncio.run(assistant.start())                # ✅ await properly
-        asyncio.run(precheck_channels(assistant))     # ✅ your channel auto-join logic
+
+        async def start_assistant():
+            global ASSISTANT_USERNAME, ASSISTANT_CHAT_ID
+            await assistant.start()
+            assistant_user = await assistant.get_me()
+            ASSISTANT_USERNAME = assistant_user.username
+            ASSISTANT_CHAT_ID = assistant_user.id
+            logger.info(f"✨ Assistant Username: @{ASSISTANT_USERNAME}")
+            logger.info(f"💕 Assistant Chat ID: {ASSISTANT_CHAT_ID}")
+            await precheck_channels(assistant)
+
+        asyncio.get_event_loop().run_until_complete(start_assistant())
         logger.info("Assistant client connected.")
 
     logger.info("→ Entering idle() (long-polling)")
-    asyncio.run(idle())
+    idle()
 
-    asyncio.run(bot.stop())
+    bot.stop()
     logger.info("Bot stopped.")
     logger.info("✅ All services are up and running. Bot started successfully.")
