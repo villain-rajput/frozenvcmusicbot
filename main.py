@@ -97,26 +97,13 @@ asyncio.get_event_loop().set_exception_handler(_custom_exception_handler)
 session_name = os.environ.get("SESSION_NAME", "music_bot1")
 bot = Client(session_name, bot_token=BOT_TOKEN, api_id=API_ID, api_hash=API_HASH)
 assistant = Client("assistant_account", session_string=ASSISTANT_SESSION)
-call_py = PyTgCalls(assistant)
+call_py = None
 
 
 ASSISTANT_USERNAME = None
 ASSISTANT_CHAT_ID = None
 API_ASSISTANT_USERNAME = os.getenv("API_ASSISTANT_USERNAME")
 
-if not ASSISTANT_USERNAME or not ASSISTANT_CHAT_ID or not API_ASSISTANT_USERNAME:
-    print("Assistant username and chat ID not set")
-else:
-    # Convert chat ID to integer if needed
-    try:
-        ASSISTANT_CHAT_ID = int(ASSISTANT_CHAT_ID)
-    except ValueError:
-        print("Invalid ASSISTANT_CHAT_ID: not an integer")
-
-# API Endpoints
-API_URL = os.environ.get("API_URL")
-DOWNLOAD_API_URL = os.environ.get("DOWNLOAD_API_URL")
-BACKUP_SEARCH_API_URL= os.environ.get("BACKUP_SEARCH_API_URL")
 
 # ─── MongoDB Setup ─────────────────────────────────────────
 mongo_uri = os.environ.get("MongoDB_url")
@@ -1549,17 +1536,14 @@ async def frozen_check_loop(bot_username: str):
 
 
 
+logger = logging.getLogger(__name__)
+
 async def main():
+    global BOT_NAME, BOT_USERNAME, BOT_LINK, ASSISTANT_USERNAME, ASSISTANT_CHAT_ID, call_py
+
     logger.info("Loading persisted state from MongoDB...")
     load_state_from_db()
     logger.info("State loaded successfully.")
-
-    logger.info("→ Starting PyTgCalls client...")
-    if not call_py.is_connected:
-        await call_py.start()
-        logger.info("✅ PyTgCalls client started.")
-    else:
-        logger.info("ℹ️ PyTgCalls client already connected. Skipping start.")
 
     logger.info("→ Starting Telegram bot client...")
     try:
@@ -1569,16 +1553,14 @@ async def main():
         sys.exit(1)
 
     me = await bot.get_me()
-    global BOT_NAME, BOT_USERNAME, BOT_LINK, ASSISTANT_USERNAME, ASSISTANT_CHAT_ID
     BOT_NAME = me.first_name or "Frozen Music"
     BOT_USERNAME = me.username or "vcmusiclubot"
     BOT_LINK = f"https://t.me/{BOT_USERNAME}"
-
     logger.info(f"✅ Bot Name: {BOT_NAME!r}")
     logger.info(f"✅ Bot Username: {BOT_USERNAME}")
     logger.info(f"✅ Bot Link: {BOT_LINK}")
 
-    asyncio.create_task(frozen_check_loop(BOT_USERNAME))  # ✅ still runs fine
+    asyncio.create_task(frozen_check_loop(BOT_USERNAME))
 
     logger.info("→ Starting assistant client...")
     if not assistant.is_connected:
@@ -1595,9 +1577,27 @@ async def main():
 
     await precheck_channels(assistant)
 
+    logger.info("→ Starting PyTgCalls client...")
+    if not call_py:
+        call_py = PyTgCalls(assistant)
+
+    if not call_py.is_connected:
+        await call_py.start()
+        logger.info("✅ PyTgCalls client started.")
+    else:
+        logger.info("ℹ️ PyTgCalls client already connected. Skipping start.")
+
     logger.info("→ Entering idle() (long-polling)")
     await idle()
 
     await bot.stop()
     logger.info("Bot stopped.")
+
+# --- Main Entry ---
+if __name__ == "__main__":
+    try:
+        asyncio.run(main())
+    except (KeyboardInterrupt, SystemExit):
+        logger.warning("Process interrupted. Shutting down...")
+
 
