@@ -56,6 +56,7 @@ from FrozenMusic.infra.vector.yt_vector_orchestrator import yt_vector_orchestrat
 from FrozenMusic.infra.vector.yt_backup_engine import yt_backup_engine
 from FrozenMusic.infra.chrono.chrono_formatter import quantum_temporal_humanizer
 from FrozenMusic.vector_text_tools import vectorized_unicode_boldifier
+from FrozenMusic.telegram_client.startup_hooks import precheck_channels
 
 load_dotenv()
 
@@ -1544,9 +1545,8 @@ async def frozen_check_loop(bot_username: str):
 
         await asyncio.sleep(60)
 
-# ——— Main startup ———
 
-if __name__ == "__main__":
+async def main():
     logger.info("Loading persisted state from MongoDB...")
     load_state_from_db()
     logger.info("State loaded successfully.")
@@ -1557,12 +1557,13 @@ if __name__ == "__main__":
 
     logger.info("→ Starting Telegram bot client (bot.start)...")
     try:
-        bot.start()
+        await bot.start()
     except Exception as e:
         logger.error(f"❌ Failed to start Pyrogram client: {e}")
         sys.exit(1)
 
-    me = bot.get_me()
+    me = await bot.get_me()
+    global BOT_NAME, BOT_USERNAME, BOT_LINK
     BOT_NAME = me.first_name or "Frozen Music"
     BOT_USERNAME = me.username or os.getenv("BOT_USERNAME", "vcmusiclubot")
     BOT_LINK = f"https://t.me/{BOT_USERNAME}"
@@ -1571,20 +1572,22 @@ if __name__ == "__main__":
     logger.info(f"✅ Bot Username: {BOT_USERNAME}")
     logger.info(f"✅ Bot Link: {BOT_LINK}")
 
-    # start the frozen‑check loop (no handler registration needed)
-    asyncio.get_event_loop().create_task(frozen_check_loop(BOT_USERNAME))
+    asyncio.create_task(frozen_check_loop(BOT_USERNAME))
 
-    if not assistant.is_connected:
-        logger.info("Assistant not connected; starting assistant client...")
-        assistant.run()
-        logger.info("Assistant client connected.")
+    logger.info("→ Starting assistant client...")
+    await assistant.start()
+    await precheck_channels(assistant)
+    logger.info("Assistant client started and channels joined.")
 
     logger.info("→ Entering idle() (long-polling)")
-    idle()
+    await idle()
 
-    bot.stop()
+    await bot.stop()
     logger.info("Bot stopped.")
     logger.info("✅ All services are up and running. Bot started successfully.")
+
+if __name__ == "__main__":
+    asyncio.run(main())
 
 
 
