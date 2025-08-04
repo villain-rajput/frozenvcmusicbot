@@ -1518,7 +1518,7 @@ async def frozen_check_loop(bot_username: str):
     while True:
         try:
             # 1) send the check command
-            await assistant.send_message(f"{bot_username}", "/frozen_check")
+            await assistant.send_message(bot_username, "/frozen_check")
             logger.info(f"Sent /frozen_check to @{bot_username}")
 
             # 2) poll for a reply for up to 30 seconds
@@ -1526,13 +1526,14 @@ async def frozen_check_loop(bot_username: str):
             got_ok = False
 
             while time.time() < deadline:
-                msgs = await assistant.get_history(f"{bot_username}", limit=1)
-                if msgs:
-                    text = msgs[0].text or ""
+                async for msg in assistant.get_chat_history(bot_username, limit=1):
+                    text = msg.text or ""
                     if "frozen check successful ✨" in text.lower():
                         got_ok = True
                         logger.info("Received frozen check confirmation.")
                         break
+                if got_ok:
+                    break
                 await asyncio.sleep(3)
 
             # 3) if no confirmation, restart
@@ -1544,6 +1545,7 @@ async def frozen_check_loop(bot_username: str):
             logger.error(f"Error in frozen_check_loop: {e}")
 
         await asyncio.sleep(60)
+
 
 
 
