@@ -1578,7 +1578,7 @@ if __name__ == "__main__":
         logger.info(f"✨ Assistant Username: @{ASSISTANT_USERNAME}")
         logger.info(f"💕 Assistant Chat ID: {ASSISTANT_CHAT_ID}")
 
-        precheck_channels(assistant)
+        asyncio.get_event_loop().run_until_complete(precheck_channels(assistant))
         logger.info("✅ Assistant precheck completed.")
 
     except Exception as e:
