@@ -97,7 +97,7 @@ asyncio.get_event_loop().set_exception_handler(_custom_exception_handler)
 session_name = os.environ.get("SESSION_NAME", "music_bot1")
 bot = Client(session_name, bot_token=BOT_TOKEN, api_id=API_ID, api_hash=API_HASH)
 assistant = Client("assistant_account", session_string=ASSISTANT_SESSION)
-call_py = None
+call_py = PyTgCalls(assistant)
 
 
 ASSISTANT_USERNAME = None
@@ -1577,15 +1577,12 @@ async def main():
 
     await precheck_channels(assistant)
 
-    logger.info("→ Starting PyTgCalls client...")
+    logger.info("→ Initializing PyTgCalls client...")
     if not call_py:
         call_py = PyTgCalls(assistant)
-
-    if not call_py.is_connected:
-        await call_py.start()
-        logger.info("✅ PyTgCalls client started.")
+        logger.info("✅ PyTgCalls client initialized. (Manual start required)")
     else:
-        logger.info("ℹ️ PyTgCalls client already connected. Skipping start.")
+        logger.info("ℹ️ PyTgCalls client already initialized.")
 
     logger.info("→ Entering idle() (long-polling)")
     await idle()
@@ -1599,5 +1596,6 @@ if __name__ == "__main__":
         asyncio.run(main())
     except (KeyboardInterrupt, SystemExit):
         logger.warning("Process interrupted. Shutting down...")
+
 
 
