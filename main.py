@@ -1555,8 +1555,11 @@ async def main():
     logger.info("State loaded successfully.")
 
     logger.info("→ Starting PyTgCalls client...")
-    await call_py.start()  # ✅ fixed
-    logger.info("PyTgCalls client started.")
+    if not call_py.is_connected:
+        await call_py.start()
+        logger.info("✅ PyTgCalls client started.")
+    else:
+        logger.info("ℹ️ PyTgCalls client already connected. Skipping start.")
 
     logger.info("→ Starting Telegram bot client...")
     try:
@@ -1578,7 +1581,11 @@ async def main():
     asyncio.create_task(frozen_check_loop(BOT_USERNAME))  # ✅ still runs fine
 
     logger.info("→ Starting assistant client...")
-    await assistant.start()
+    if not assistant.is_connected:
+        await assistant.start()
+        logger.info("✅ Assistant client started.")
+    else:
+        logger.info("ℹ️ Assistant already connected. Skipping start.")
 
     assistant_user = await assistant.get_me()
     ASSISTANT_USERNAME = assistant_user.username
@@ -1587,7 +1594,6 @@ async def main():
     logger.info(f"💕 Assistant Chat ID: {ASSISTANT_CHAT_ID}")
 
     await precheck_channels(assistant)
-    logger.info("Assistant client started.")
 
     logger.info("→ Entering idle() (long-polling)")
     await idle()
@@ -1595,5 +1601,3 @@ async def main():
     await bot.stop()
     logger.info("Bot stopped.")
 
-if __name__ == "__main__":
-    asyncio.run(main())
