@@ -316,8 +316,8 @@ async def fetch_youtube_link_backup(query):
     except Exception as e:
         raise Exception(f"Backup Search API error: {e}")
     
-BOT_NAME = os.environ.get("BOT_NAME", "Frozen Music")
-BOT_LINK = os.environ.get("BOT_LINK", "https://t.me/vcmusiclubot")
+BOT_NAME = os.environ.get("BOT_NAME", "VEXAA SERIES")
+BOT_LINK = os.environ.get("BOT_LINK", "https://t.me/V_Series_bot")
 
 from pyrogram.errors import UserAlreadyParticipant, RPCError
 
@@ -388,10 +388,10 @@ async def start_handler(_, message):
     buttons = [
         [
             InlineKeyboardButton(f"➕ {add_me_text}", url=f"{BOT_LINK}?startgroup=true"),
-            InlineKeyboardButton(f"📢 {updates_text}", url="https://t.me/vibeshiftbots")
+            InlineKeyboardButton(f"📢 {updates_text}", url="https://t.me/LoSt_StOrY_V")
         ],
         [
-            InlineKeyboardButton(f"💬 {support_text}", url="https://t.me/Frozensupport1"),
+            InlineKeyboardButton(f"💬 {support_text}", url="https://t.me/LoSt_StOrY_V"),
             InlineKeyboardButton(f"❓ {help_text}", callback_data="show_help")
         ]
     ]
@@ -443,10 +443,10 @@ async def go_back_callback(_, callback_query):
     buttons = [
         [
             InlineKeyboardButton(f"➕ {add_me_text}", url=f"{BOT_LINK}?startgroup=true"),
-            InlineKeyboardButton(f"📢 {updates_text}", url="https://t.me/vibeshiftbots")
+            InlineKeyboardButton(f"📢 {updates_text}", url="https://t.me/LoSt_StOrY_V")
         ],
         [
-            InlineKeyboardButton(f"💬 {support_text}", url="https://t.me/Frozensupport1"),
+            InlineKeyboardButton(f"💬 {support_text}", url="https://t.me/LoSt_StOrY_V"),
             InlineKeyboardButton(f"❓ {help_text}", callback_data="show_help")
         ]
     ]
