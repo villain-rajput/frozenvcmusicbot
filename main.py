@@ -1577,7 +1577,7 @@ async def main():
     logger.info("→ Starting assistant client...")
     await assistant.start()
     await precheck_channels(assistant)
-    logger.info("Assistant client started and channels joined.")
+    logger.info("Assistant client started")
 
     logger.info("→ Entering idle() (long-polling)")
     await idle()
