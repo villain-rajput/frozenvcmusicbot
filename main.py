@@ -1547,53 +1547,51 @@ async def frozen_check_loop(bot_username: str):
 
 
 
-if __name__ == "__main__":
+async def main():
     logger.info("Loading persisted state from MongoDB...")
     load_state_from_db()
     logger.info("State loaded successfully.")
 
     logger.info("→ Starting PyTgCalls client...")
-    call_py.start()
+    await call_py.start()  # ✅ fixed
     logger.info("PyTgCalls client started.")
 
-    logger.info("→ Starting Telegram bot client (bot.start)...")
+    logger.info("→ Starting Telegram bot client...")
     try:
-        bot.start()
+        await bot.start()
     except Exception as e:
         logger.error(f"❌ Failed to start Pyrogram client: {e}")
         sys.exit(1)
 
-    me = bot.get_me()
+    me = await bot.get_me()
+    global BOT_NAME, BOT_USERNAME, BOT_LINK, ASSISTANT_USERNAME, ASSISTANT_CHAT_ID
     BOT_NAME = me.first_name or "Frozen Music"
-    BOT_USERNAME = me.username or os.getenv("BOT_USERNAME", "vcmusiclubot")
+    BOT_USERNAME = me.username or "vcmusiclubot"
     BOT_LINK = f"https://t.me/{BOT_USERNAME}"
 
     logger.info(f"✅ Bot Name: {BOT_NAME!r}")
     logger.info(f"✅ Bot Username: {BOT_USERNAME}")
     logger.info(f"✅ Bot Link: {BOT_LINK}")
 
-    # start the frozen‑check loop (no handler registration needed)
-    asyncio.get_event_loop().create_task(frozen_check_loop(BOT_USERNAME))
+    asyncio.create_task(frozen_check_loop(BOT_USERNAME))  # ✅ still runs fine
 
-    if not assistant.is_connected:
-        logger.info("Assistant not connected; starting assistant client...")
+    logger.info("→ Starting assistant client...")
+    await assistant.start()
 
-        async def start_assistant():
-            global ASSISTANT_USERNAME, ASSISTANT_CHAT_ID
-            await assistant.start()
-            assistant_user = await assistant.get_me()
-            ASSISTANT_USERNAME = assistant_user.username
-            ASSISTANT_CHAT_ID = assistant_user.id
-            logger.info(f"✨ Assistant Username: @{ASSISTANT_USERNAME}")
-            logger.info(f"💕 Assistant Chat ID: {ASSISTANT_CHAT_ID}")
-            await precheck_channels(assistant)
+    assistant_user = await assistant.get_me()
+    ASSISTANT_USERNAME = assistant_user.username
+    ASSISTANT_CHAT_ID = assistant_user.id
+    logger.info(f"✨ Assistant Username: @{ASSISTANT_USERNAME}")
+    logger.info(f"💕 Assistant Chat ID: {ASSISTANT_CHAT_ID}")
 
-        asyncio.get_event_loop().run_until_complete(start_assistant())
-        logger.info("Assistant client connected.")
+    await precheck_channels(assistant)
+    logger.info("Assistant client started.")
 
     logger.info("→ Entering idle() (long-polling)")
-    idle()
+    await idle()
 
-    bot.stop()
+    await bot.stop()
     logger.info("Bot stopped.")
-    logger.info("✅ All services are up and running. Bot started successfully.")
+
+if __name__ == "__main__":
+    asyncio.run(main())
