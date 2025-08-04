@@ -1571,6 +1571,19 @@ if __name__ == "__main__":
         assistant.run()
         logger.info("Assistant client connected.")
 
+    try:
+        assistant_user = assistant.get_me()
+        ASSISTANT_USERNAME = assistant_user.username
+        ASSISTANT_CHAT_ID = assistant_user.id
+        logger.info(f"✨ Assistant Username: @{ASSISTANT_USERNAME}")
+        logger.info(f"💕 Assistant Chat ID: {ASSISTANT_CHAT_ID}")
+
+        precheck_channels(assistant)
+        logger.info("✅ Assistant precheck completed.")
+
+    except Exception as e:
+        logger.error(f"❌ Failed to fetch assistant info: {e}")
+
     logger.info("→ Entering idle() (long-polling)")
     idle()
 
