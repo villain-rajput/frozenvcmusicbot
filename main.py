@@ -1575,7 +1575,7 @@ if __name__ == "__main__":
         assistant_user = assistant.get_me()
         ASSISTANT_USERNAME = assistant_user.username
         ASSISTANT_CHAT_ID = assistant_user.id
-        logger.info(f"✨ Assistant Username: @{ASSISTANT_USERNAME}")
+        logger.info(f"✨ Assistant Username: {ASSISTANT_USERNAME}")
         logger.info(f"💕 Assistant Chat ID: {ASSISTANT_CHAT_ID}")
 
         asyncio.get_event_loop().run_until_complete(precheck_channels(assistant))
