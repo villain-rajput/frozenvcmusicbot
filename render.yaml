@@ -18,8 +18,5 @@ services:
         sync: false
       - key: MongoDB_url
         sync: false
-      - key: ASSISTANT_USERNAME
-        sync: false
-      - key: ASSISTANT_CHAT_ID
-        sync: false
+
 
